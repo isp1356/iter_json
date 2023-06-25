@@ -1,31 +1,17 @@
 import json
-from enum import Enum
 
-from .util import is_iter
+from .util import Kind, is_iter
+from .util import iter_join as _iter_join
 
-
-class Kind(Enum):
-    sep = 0
-    obj = 1
+SEP = ", "
+COLON = ": "
 
 
-def iter_join(iterable, sep=", "):
-    x, y = None, None
-    has_data = False
-    for i, e in enumerate(iterable):
-        has_data = True
-        if i == 0:
-            y = e
-        if i > 0:
-            x, y = y, e
-            yield Kind.obj, x
-            yield Kind.sep, sep
-    if not has_data:
-        return
-    yield Kind.obj, y
+def iter_join(iterable, sep=SEP):
+    yield from _iter_join(iterable=iterable, sep=SEP)
 
 
-def iter_obj(obj, comma=", ", colon=": ", is_key=False):
+def iter_obj(obj, comma=SEP, colon=COLON, is_key=False):
     if obj is None or isinstance(obj, (int, str)):
         yield Kind.obj, obj, is_key
 

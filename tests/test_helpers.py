@@ -1,6 +1,7 @@
 import pytest
 
 from .. import aiter_join, iter_join
+from ..iter_json.lib import SEP
 
 pytest_plugins = "pytest_asyncio"
 
@@ -17,9 +18,9 @@ pytest_plugins = "pytest_asyncio"
 )
 def test_iter_join(input_):
     s = ""
-    for _, e in iter_join(input_, sep=", "):
+    for _, e in iter_join(input_, sep=SEP):
         s += str(e)
-    assert s == ", ".join([str(e) for e in input_])
+    assert s == SEP.join([str(e) for e in input_])
 
 
 @pytest.mark.asyncio
@@ -45,4 +46,4 @@ async def test_aiter_join(input_):
     s = ""
     async for _, e in aiter_join(producer):
         s += str(e)
-    assert s == ", ".join([str(e) for e in input_])
+    assert s == SEP.join([str(e) for e in input_])

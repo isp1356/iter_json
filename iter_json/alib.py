@@ -1,28 +1,16 @@
 import json
 
-from .lib import Kind, iter_join
+from .lib import COLON, SEP, Kind, iter_join
+from .util import aiter_join as _aiter_join
 from .util import is_aiter, is_iter
 
 
-async def aiter_join(iterable, sep=", "):
-    x, y = None, None
-    has_data = False
-    i = 0
-    async for e in iterable:
-        has_data = True
-        if i == 0:
-            y = e
-        if i > 0:
-            x, y = y, e
-            yield Kind.obj, x
-            yield Kind.sep, sep
-        i += 1
-    if not has_data:
-        return
-    yield Kind.obj, y
+async def aiter_join(iterable, sep=SEP):
+    async for i in _aiter_join(iterable=iterable, sep=SEP):
+        yield i
 
 
-async def aiter_obj(obj, comma=", ", colon=": ", is_key=False):
+async def aiter_obj(obj, comma=SEP, colon=COLON, is_key=False):
     if obj is None or isinstance(obj, (int, str)):
         yield Kind.obj, obj, is_key
 
@@ -33,9 +21,7 @@ async def aiter_obj(obj, comma=", ", colon=": ", is_key=False):
                 yield kind, e, False
             elif kind == Kind.obj:
                 key, val = e
-                async for keys in aiter_obj(
-                    key, comma=comma, colon=colon, is_key=True
-                ):
+                async for keys in aiter_obj(key, comma=comma, colon=colon, is_key=True):
                     yield keys
                 yield Kind.sep, colon, False
                 async for values in aiter_obj(val, comma=comma, colon=colon):
