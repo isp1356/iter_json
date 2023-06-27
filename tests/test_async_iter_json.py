@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from .. import adumps
+from iter_json import adumps
 
 pytest_plugins = "pytest_asyncio"
 

@@ -1,7 +1,7 @@
 import pytest
 
-from .. import aiter_join, iter_join
-from ..iter_json.lib import SEP
+from iter_json import aiter_join, iter_join
+from iter_json.lib import SEP
 
 pytest_plugins = "pytest_asyncio"
 

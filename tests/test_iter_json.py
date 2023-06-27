@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from .. import dumps
+from iter_json import dumps
 
 
 @pytest.mark.parametrize(
