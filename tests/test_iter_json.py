@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from iter_json import dumps
+from iter_json import iter_json
 
 
 @pytest.mark.parametrize(
@@ -38,6 +38,13 @@ from iter_json import dumps
 )
 def test_dumps_normal_object(input_):
     assert dumps(input_) == json.dumps(input_)
+
+
+def dumps(obj):
+    serialized = ""
+    for i in iter_json(obj):
+        serialized += i
+    return serialized
 
 
 @pytest.mark.parametrize(

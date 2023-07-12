@@ -71,10 +71,3 @@ async def aiter_json(obj):
                 yield json.dumps(e)
         else:
             RuntimeError("Unknown kind of object", kind)
-
-
-async def adumps(obj):
-    serialized = ""
-    async for i in aiter_json(obj):
-        serialized += i
-    return serialized

@@ -29,16 +29,29 @@ async def some_data_producer():
 
 
 async def json_streamer():
-    partial_result = {"start": "hello!", "data": some_data_producer(), "end": "bye!"}
+    partial_result = {
+        "start": "hello!",
+        "data": some_data_producer(),
+        "end": "bye!",
+    }
     async for s in aiter_json(partial_result):
         yield s
 
 
-async def json_receiver():
-    s = ""
+async def binary_dumps():
+    data = bytearray()
     async for i in json_streamer():
-        s += i
-    assert json.loads(s) == {"start": "hello!", "data": list(range(100_000)), "end": "bye!"}
+        data += i.encode()
+    return data
+
+
+async def json_receiver():
+    data = await binary_dumps()
+    assert json.loads(data.decode()) == {
+        "start": "hello!",
+        "data": list(range(100_000)),
+        "end": "bye!",
+    }
 
 
 asyncio.run(json_receiver())

@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from iter_json import adumps
+from iter_json import aiter_json
 
 pytest_plugins = "pytest_asyncio"
 
@@ -46,6 +46,13 @@ async def test_dumps_normal_object(input_):
 async def producer(it):
     for i in it:
         yield i
+
+
+async def adumps(obj):
+    serialized = ""
+    async for i in aiter_json(obj):
+        serialized += i
+    return serialized
 
 
 @pytest.mark.asyncio

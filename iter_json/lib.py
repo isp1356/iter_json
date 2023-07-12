@@ -58,10 +58,3 @@ def iter_json(obj):
                 yield json.dumps(e)
         else:
             RuntimeError("Unknown kind of object", kind)
-
-
-def dumps(obj):
-    serialized = ""
-    for i in iter_json(obj):
-        serialized += i
-    return serialized
